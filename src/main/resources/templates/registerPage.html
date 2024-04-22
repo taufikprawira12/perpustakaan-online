@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:font-size="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi</title>
+    <style>
+        /* Style CSS dapat ditambahkan di sini untuk mempercantik tampilan halaman */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<form action="/registerButton" method="POST">
+    <h2>Registrasi</h2>
+    <input type="text" name="userName" placeholder="Username" th:value="${userName}" required>
+    <input type="email" name="email" placeholder="Email" th:value="${email}" required>
+    <span th:if="${errorEmail}" style="color: red; font-size: 12px;" th:text="${errorEmail}"></span>
+    <input type="password" name="password" placeholder="Password" th:value="${password}" required>
+    <span th:if="${errorPassword}" style="color: red; font-size: 12px;" th:text="${errorPassword}"></span>
+    <input type="submit" value="Daftar">
+</form>
+
+</body>
+</html>
