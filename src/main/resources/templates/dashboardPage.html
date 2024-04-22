@@ -30,6 +30,12 @@
     .book-item {
       border-bottom: 1px solid #ccc;
       padding: 10px 0;
+      display: flex; /* Menjadikan elemen book-item menjadi flexbox */
+      justify-content: space-between; /* Mengatur jarak antara elemen pada flexbox */
+      align-items: center; /* Mengatur penempatan elemen pada flexbox */
+    }
+    .book-details {
+      flex: 1; /* Menjadikan elemen book-details fleksibel */
     }
     .book-title {
       font-weight: bold;
@@ -37,8 +43,11 @@
     .book-author {
       color: #666;
     }
+    .book-available {
+      color: green;
+      font-weight: bold;
+    }
     .button {
-      display: inline-block;
       padding: 8px 16px;
       background-color: #007bff;
       color: #fff;
@@ -55,21 +64,30 @@
   <h1>Dashboard - Peminjaman Buku</h1>
   <ul class="book-list">
     <li class="book-item">
-      <span class="book-title">Book 1</span>
-      <span class="book-author">Author 1</span>
+      <div class="book-details">
+        <span class="book-title">Book 1</span>
+        <span class="book-author">Author 1</span>
+      </div>
+      <span class="book-available">10 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
       <a href="#" class="button">Pinjam</a>
     </li>
     <li class="book-item">
-      <span class="book-title">Book 2</span>
-      <span class="book-author">Author 2</span>
+      <div class="book-details">
+        <span class="book-title">Book 2</span>
+        <span class="book-author">Author 2</span>
+      </div>
+      <span class="book-available">5 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
       <a href="#" class="button">Pinjam</a>
     </li>
     <li class="book-item">
-      <span class="book-title">Book 3</span>
-      <span class="book-author">Author 3</span>
+      <div class="book-details">
+        <span class="book-title">Book 3</span>
+        <span class="book-author">Author 3</span>
+      </div>
+      <span class="book-available">8 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
       <a href="#" class="button">Pinjam</a>
     </li>
-    <!-- You can add more books here -->
+    <!-- Anda dapat menambahkan lebih banyak buku di sini -->
   </ul>
 </div>
 </body>
