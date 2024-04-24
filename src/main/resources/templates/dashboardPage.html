@@ -43,6 +43,9 @@
     .book-author {
       color: #666;
     }
+    .form-group {
+      margin-bottom: 20px;
+    }
     .book-available {
       color: green;
       font-weight: bold;
@@ -65,28 +68,34 @@
   <ul class="book-list">
     <li class="book-item">
       <div class="book-details">
-        <span class="book-title">Book 1</span>
-        <span class="book-author">Author 1</span>
+        <span class="book-title" th:if="${name}" style="font-size: 20px;"  th:text="${name}"></span>
+        <span class="book-author" th:if="${author}" style="font-size: 20px;"  th:text="${author}"></span>
       </div>
-      <span class="book-available">10 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
-      <a href="#" class="button">Pinjam</a>
+      <span th:if="${stock}" style="font-size: 20px;"  th:text="${stock}"></span>
+      <form action="/pinjamBuku" method="POST">
+        <input type="hidden" name="bookId" value="1"> <!-- Nilai ID buku yang ingin dipinjam -->
+        <div class="form-group">
+          <button type="submit" class="button">Pinjam Buku</button>
+          <span th:if="${isBorrowed}" style="color: red; font-size: 12px;"  th:text="${isBorrowed}"></span>
+        </div>
+      </form>
     </li>
-    <li class="book-item">
-      <div class="book-details">
-        <span class="book-title">Book 2</span>
-        <span class="book-author">Author 2</span>
-      </div>
-      <span class="book-available">5 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
-      <a href="#" class="button">Pinjam</a>
-    </li>
-    <li class="book-item">
-      <div class="book-details">
-        <span class="book-title">Book 3</span>
-        <span class="book-author">Author 3</span>
-      </div>
-      <span class="book-available">8 available</span> <!-- Menampilkan jumlah buku yang tersedia -->
-      <a href="#" class="button">Pinjam</a>
-    </li>
+<!--    <li class="book-item">-->
+<!--      <div class="book-details">-->
+<!--        <span class="book-title">Book 2</span>-->
+<!--        <span class="book-author">Author 2</span>-->
+<!--      </div>-->
+<!--      <span class="book-available">5 available</span> &lt;!&ndash; Menampilkan jumlah buku yang tersedia &ndash;&gt;-->
+<!--      <a href="#" class="button">Pinjam</a>-->
+<!--    </li>-->
+<!--    <li class="book-item">-->
+<!--      <div class="book-details">-->
+<!--        <span class="book-title">Book 3</span>-->
+<!--        <span class="book-author">Author 3</span>-->
+<!--      </div>-->
+<!--      <span th:if="${book1}" style="font-size: 20px;"  th:text="${book1}"></span>-->
+<!--      <a href="#" class="button">Pinjam</a>-->
+<!--    </li>-->
     <!-- Anda dapat menambahkan lebih banyak buku di sini -->
   </ul>
 </div>
