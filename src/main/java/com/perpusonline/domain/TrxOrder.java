@@ -26,6 +26,18 @@ public class TrxOrder {
     @Column(name = "idMember")
     private String idMember;
 
+    @Column(name = "tglPeminjaman")
+    private String tglPeminjaman;
+
+    @Column(name = "returnDeadline")
+    private String returnDeadline;
+
+    @Column(name = "tglPengembalian")
+    private String tglPengembalian;
+
+    @Column(name = "isReturn")
+    private boolean isReturn;
+
     public Integer getId() {
         return id;
     }
@@ -72,5 +84,37 @@ public class TrxOrder {
 
     public void setIdMember(String idMember) {
         this.idMember = idMember;
+    }
+
+    public String getTglPeminjaman() {
+        return tglPeminjaman;
+    }
+
+    public void setTglPeminjaman(String tglPeminjaman) {
+        this.tglPeminjaman = tglPeminjaman;
+    }
+
+    public String getTglPengembalian() {
+        return tglPengembalian;
+    }
+
+    public void setTglPengembalian(String tglPengembalian) {
+        this.tglPengembalian = tglPengembalian;
+    }
+
+    public boolean isReturn() {
+        return isReturn;
+    }
+
+    public void setReturn(boolean aReturn) {
+        isReturn = aReturn;
+    }
+
+    public String getReturnDeadline() {
+        return returnDeadline;
+    }
+
+    public void setReturnDeadline(String returnDeadline) {
+        this.returnDeadline = returnDeadline;
     }
 }

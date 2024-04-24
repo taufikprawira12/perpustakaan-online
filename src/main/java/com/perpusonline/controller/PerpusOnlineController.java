@@ -13,6 +13,12 @@ public class PerpusOnlineController {
     private PerpusOnlineServices perpusOnlineServices;
 
     @RequestMapping("/")
+    public String homePage(){
+        String homePage = perpusOnlineServices.homePage();
+        return homePage;
+    }
+
+    @RequestMapping("/registerPage")
     public String registerPage(){
         return "registerPage";
     }
@@ -47,5 +53,23 @@ public class PerpusOnlineController {
     public String borrowingBook(Model model, @RequestParam("bookId") Integer bookId) {
         String borrowingBook = perpusOnlineServices.borrowingBook(model, bookId);
         return borrowingBook;
+    }
+
+    @RequestMapping("returnBook")
+    public String returnBook(Model model, @RequestParam("bookId") Integer bookId) {
+        String returnBook = perpusOnlineServices.returnBook(model, bookId);
+        return returnBook;
+    }
+
+    @RequestMapping("logoutPage")
+    public String logout(@RequestParam("userLogin") String userLogin) {
+        String logout = perpusOnlineServices.logoutPage(userLogin);
+        return logout;
+    }
+
+    @RequestMapping("adminPage")
+    public String adminPage(Model model){
+        String adminPage = perpusOnlineServices.adminPage(model);
+        return adminPage;
     }
 }

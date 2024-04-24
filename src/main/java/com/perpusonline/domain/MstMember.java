@@ -32,10 +32,21 @@ public class MstMember {
     @Column(name = "isBorrowed")
     private boolean isBorrowed;
 
+    @Column(name = "isAdmin")
+    private boolean isAdmin;
+
     public MstMember(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+    }
+
+    public MstMember(String userName, String email, String password, String idMember, boolean isAdmin) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.idMember = idMember;
+        this.isAdmin = isAdmin;
     }
 
     public MstMember() {
@@ -109,5 +120,13 @@ public class MstMember {
 
     public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

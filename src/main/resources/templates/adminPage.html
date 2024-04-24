@@ -30,12 +30,12 @@
     .book-item {
       border-bottom: 1px solid #ccc;
       padding: 10px 0;
-      display: flex; /* Menjadikan elemen book-item menjadi flexbox */
-      justify-content: space-between; /* Mengatur jarak antara elemen pada flexbox */
-      align-items: center; /* Mengatur penempatan elemen pada flexbox */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .book-details {
-      flex: 1; /* Menjadikan elemen book-details fleksibel */
+      flex: 1;
     }
     .book-title {
       font-weight: bold;
@@ -45,10 +45,6 @@
     }
     .form-group {
       margin-bottom: 20px;
-    }
-    .book-available {
-      color: green;
-      font-weight: bold;
     }
     .button {
       padding: 8px 16px;
@@ -68,23 +64,13 @@
   <ul class="book-list">
     <li class="book-item">
       <div class="book-details">
-        <span class="book-title" th:if="${name}" style="font-size: 20px;"  th:text="${name}"></span>
-        <span class="book-author" th:if="${author}" style="font-size: 20px;"  th:text="${author}"></span>
+        <span class="book-title" style="font-size: 20px;">Book Name: <span th:text="${name}"></span></span>
+        <span class="book-author" style="font-size: 20px;">Author: <span th:text="${author}"></span></span>
+        <span style="font-size: 20px;">Member ID: <span th:text="${idMember}"></span></span>
+        <span style="font-size: 20px;">Tanggal Peminjaman: <span th:text="${tglPeminjaman}"></span></span>
+        <span style="font-size: 20px;">Return Deadline: <span th:text="${returnDeadline}"></span></span>
+        <span style="font-size: 20px;">Keterlambatan: <span th:text="${keterlambatan}"></span></span>
       </div>
-      <span th:if="${stock}" style="font-size: 20px;"  th:text="${stock}"></span>
-      <form action="/pinjamBuku" method="POST">
-        <input type="hidden" name="bookId" value="1">
-        <div class="form-group">
-          <button type="submit" class="button">Pinjam Buku</button>
-        </div>
-      </form>
-      <form action="/returnBook" method="POST">
-        <input type="hidden" name="bookId" value="1">
-        <div class="form-group">
-          <button type="submit" class="button">Kembalikan Buku</button>
-        </div>
-        <span th:if="${isBorrowed}" style="color: red; font-size: 12px;"  th:text="${isBorrowed}"></span>
-      </form>
     </li>
   </ul>
   <form action="/logoutPage" method="POST">

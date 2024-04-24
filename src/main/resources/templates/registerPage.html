@@ -56,6 +56,7 @@
     <input type="password" name="password" placeholder="Password" th:value="${password}" required>
     <span th:if="${errorPassword}" style="color: red; font-size: 12px;" th:text="${errorPassword}"></span>
     <input type="submit" value="Daftar">
+    <button onclick="location.href='/loginPage'">Sudah punya akun? Login</button>
 </form>
 
 </body>
