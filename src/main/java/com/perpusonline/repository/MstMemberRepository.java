@@ -18,4 +18,7 @@ public interface MstMemberRepository extends JpaRepository<MstMember, Integer> {
 
     @Query(value = "select * from mst_member where email = :email and password=:password", nativeQuery = true)
     MstMember findMstMemberByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+    @Query(value = "select * from mst_member where is_login=:isLogin", nativeQuery = true)
+    MstMember findByIsLogin(@Param("isLogin") String isLogin);
 }

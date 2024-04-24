@@ -80,6 +80,7 @@ public class PerpusOnlineServices {
             model.addAttribute("password", password);
             model.addAttribute("errorLogin", "Email atau password tidak valid!");
         } else {
+            mstMember.setIsLogin("ACTIVE");
             model.addAttribute("", null);
             return dashboardPage(model.addAttribute("",null));
         }
@@ -105,27 +106,37 @@ public class PerpusOnlineServices {
 
     public String borrowingBook( Model model, @RequestParam("bookId") Integer bookId) {
         MstBook borrowedBook = mstBookRepository.findById(bookId).orElse(null);
-        if (borrowedBook != null) {
-            model.addAttribute("name", borrowedBook.getBookName());
-            model.addAttribute("author", borrowedBook.getAuthor());
-            model.addAttribute("stock", borrowedBook.getStock() - 1);
+        MstMember mstMember = mstMemberRepository.findByIsLogin("ACTIVE");
 
-            borrowedBook.setBookName(borrowedBook.getBookName());
-            borrowedBook.setAuthor(borrowedBook.getAuthor());
-            borrowedBook.setStock(borrowedBook.getStock() - 1);
-
-            TrxOrder trxOrder = new TrxOrder();
-            trxOrder.setBookName(borrowedBook.getBookName());
-            trxOrder.setAuthor(borrowedBook.getAuthor());
-            trxOrder.setJumlahBuku(1);
-            trxOrder.setIdMember("12345");
-
-            trxOrderRepository.save(trxOrder);
-
+        if (mstMember.isBorrowed()){
+            model.addAttribute("isBorrowed", "Maximal peminjaman 1 buku, mohon kembalikan dulu buku yang telah anda pinjam");
         } else {
-            model.addAttribute("name", null);
-            model.addAttribute("author", null);
-            model.addAttribute("stock", null);
+            if (borrowedBook != null) {
+                model.addAttribute("name", borrowedBook.getBookName());
+                model.addAttribute("author", borrowedBook.getAuthor());
+                model.addAttribute("stock", borrowedBook.getStock() - 1);
+
+                borrowedBook.setBookName(borrowedBook.getBookName());
+                borrowedBook.setAuthor(borrowedBook.getAuthor());
+                borrowedBook.setStock(borrowedBook.getStock() - 1);
+
+                TrxOrder trxOrder = new TrxOrder();
+                trxOrder.setBookName(borrowedBook.getBookName());
+                trxOrder.setAuthor(borrowedBook.getAuthor());
+                trxOrder.setJumlahBuku(1);
+                trxOrder.setIdBook(mstBook.getId());
+                if (mstMember != null){
+                    trxOrder.setIdMember(mstMember.getIdMember());
+                    mstMember.setBorrowed(true);
+                }
+
+                trxOrderRepository.save(trxOrder);
+
+            } else {
+                model.addAttribute("name", null);
+                model.addAttribute("author", null);
+                model.addAttribute("stock", null);
+            }
         }
         return "dashboardPage";
     }

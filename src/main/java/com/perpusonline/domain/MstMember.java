@@ -26,6 +26,12 @@ public class MstMember {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "isLogin")
+    private String isLogin;
+
+    @Column(name = "isBorrowed")
+    private boolean isBorrowed;
+
     public MstMember(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
@@ -87,5 +93,21 @@ public class MstMember {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(String isLogin) {
+        this.isLogin = isLogin;
+    }
+
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
     }
 }

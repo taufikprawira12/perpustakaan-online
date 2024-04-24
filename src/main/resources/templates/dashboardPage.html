@@ -76,6 +76,7 @@
         <input type="hidden" name="bookId" value="1"> <!-- Nilai ID buku yang ingin dipinjam -->
         <div class="form-group">
           <button type="submit" class="button">Pinjam Buku</button>
+          <span th:if="${isBorrowed}" style="color: red; font-size: 12px;"  th:text="${isBorrowed}"></span>
         </div>
       </form>
     </li>
