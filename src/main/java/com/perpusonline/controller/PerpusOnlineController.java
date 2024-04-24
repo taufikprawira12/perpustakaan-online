@@ -14,7 +14,8 @@ public class PerpusOnlineController {
 
     @RequestMapping("/")
     public String homePage(){
-        return "homePage";
+        String homePage = perpusOnlineServices.homePage();
+        return homePage;
     }
 
     @RequestMapping("/registerPage")
@@ -64,5 +65,11 @@ public class PerpusOnlineController {
     public String logout(@RequestParam("userLogin") String userLogin) {
         String logout = perpusOnlineServices.logoutPage(userLogin);
         return logout;
+    }
+
+    @RequestMapping("adminPage")
+    public String adminPage(Model model){
+        String adminPage = perpusOnlineServices.adminPage(model);
+        return adminPage;
     }
 }

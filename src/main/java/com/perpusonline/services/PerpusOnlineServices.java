@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,11 +31,23 @@ public class PerpusOnlineServices {
     @Autowired
     private MstMemberRepository mstMemberRepository;
 
-    List<MstMember> mstMemberList = new ArrayList<>();
-    List<MstBook> mstBookList = new ArrayList<>();
-    MstBook mstBook = new MstBook(1, "Gefami", "Ujang", 2);
-    MstBook mstBook2 = new MstBook(2,"Gefamo", "Ujan", 2);
-    MstBook mstBook3 = new MstBook(3, "Gefama", "Uja", 2);
+
+    public String homePage(){
+        List<MstMember> mstMemberList = new ArrayList<>();
+        List<MstBook> mstBookList = new ArrayList<>();
+        MstBook mstBook = new MstBook(1, "Gefami", "Ujang", 2);
+        MstBook mstBook2 = new MstBook(2,"Gefamo", "Ujan", 2);
+        MstBook mstBook3 = new MstBook(3, "Gefama", "Uja", 2);
+        MstMember mstMember = new MstMember("admin", "admin@admin.com", "admin", UUID.randomUUID().toString().substring(0,13), true);
+
+        mstBookList.add(mstBook);
+        mstBookList.add(mstBook2);
+        mstBookList.add(mstBook3);
+        mstMemberRepository.save(mstMember);
+        mstBookRepository.saveAll(mstBookList);
+
+        return "homePage";
+    }
 
     public String registerPageButton(Model model, String userName, String email, String password){
         MstMember mstMember = new MstMember(userName, email, password);
@@ -67,7 +80,6 @@ public class PerpusOnlineServices {
             mstMember.setPassword(password);
             mstMember.setIdMember(UUID.randomUUID().toString().substring(0, 13));
             mstMemberRepository.save(mstMember);
-            mstMemberList.add(mstMember);
             return loginPage();
         }
     }
@@ -83,6 +95,13 @@ public class PerpusOnlineServices {
             model.addAttribute("password", password);
             model.addAttribute("errorLogin", "Email atau password tidak valid!");
         } else {
+            if (mstMember.isAdmin()){
+                mstMember.setIsLogin("ACTIVE");
+                mstMemberRepository.save(mstMember);
+                model.addAttribute("userLogin", mstMember.getIdMember());
+                model.addAttribute("", null);
+                return adminPage(model.addAttribute("",null));
+            }
             mstMember.setIsLogin("ACTIVE");
             mstMemberRepository.save(mstMember);
             model.addAttribute("userLogin", mstMember.getIdMember());
@@ -93,10 +112,6 @@ public class PerpusOnlineServices {
     }
 
     public String dashboardPage(Model model){
-        mstBookList.add(mstBook);
-        mstBookList.add(mstBook2);
-        mstBookList.add(mstBook3);
-        mstBookRepository.saveAll(mstBookList);
         List<MstBook> mstBook1 = mstBookRepository.findAll();
 
         for (MstBook item : mstBook1
@@ -136,7 +151,7 @@ public class PerpusOnlineServices {
                 trxOrder.setBookName(borrowedBook.getBookName());
                 trxOrder.setAuthor(borrowedBook.getAuthor());
                 trxOrder.setJumlahBuku(1);
-                trxOrder.setIdBook(mstBook.getId());
+                trxOrder.setIdBook(borrowedBook.getId());
                 trxOrder.setIdMember(mstMember.getIdMember());
                 mstMember.setBorrowed(true);
                 trxOrder.setTglPeminjaman(formattedDate);
@@ -182,5 +197,26 @@ public class PerpusOnlineServices {
             mstMemberRepository.save(mstMember);
         }
         return "loginPage";
+    }
+
+    public String adminPage(Model model){
+        List<TrxOrder> trxOrders = trxOrderRepository.findAll();
+
+        for (TrxOrder item : trxOrders
+        ) {
+            String tglPeminjamanString = item.getTglPeminjaman();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate tglPeminjaman = LocalDate.parse(tglPeminjamanString, formatter);
+            LocalDate today = LocalDate.now();
+            long keterlambatan = ChronoUnit.DAYS.between(tglPeminjaman, today);
+
+            model.addAttribute("name", item.getBookName());
+            model.addAttribute("author", item.getAuthor());
+            model.addAttribute("idMember", item.getIdMember());
+            model.addAttribute("tglPeminjaman", item.getTglPeminjaman());
+            model.addAttribute("returnDeadline", item.getReturnDeadline());
+            model.addAttribute("keterlambatan", keterlambatan);
+        }
+        return "adminPage";
     }
 }

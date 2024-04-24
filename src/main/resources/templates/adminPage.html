@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Peminjaman Buku</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .book-list {
+      list-style: none;
+      padding: 0;
+    }
+    .book-item {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .book-details {
+      flex: 1;
+    }
+    .book-title {
+      font-weight: bold;
+    }
+    .book-author {
+      color: #666;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Dashboard - Peminjaman Buku</h1>
+  <ul class="book-list">
+    <li class="book-item">
+      <div class="book-details">
+        <span class="book-title" style="font-size: 20px;">Book Name: <span th:text="${name}"></span></span>
+        <span class="book-author" style="font-size: 20px;">Author: <span th:text="${author}"></span></span>
+        <span style="font-size: 20px;">Member ID: <span th:text="${idMember}"></span></span>
+        <span style="font-size: 20px;">Tanggal Peminjaman: <span th:text="${tglPeminjaman}"></span></span>
+        <span style="font-size: 20px;">Return Deadline: <span th:text="${returnDeadline}"></span></span>
+        <span style="font-size: 20px;">Keterlambatan: <span th:text="${keterlambatan}"></span></span>
+      </div>
+    </li>
+  </ul>
+  <form action="/logoutPage" method="POST">
+    <input type="hidden" name="userLogin" th:value="${userLogin}">
+    <div class="form-group">
+      <button type="submit" class="button">Logout</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
