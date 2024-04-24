@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +76,7 @@ public class PerpusOnlineServices {
         return "loginPage";
     }
 
-    public String loginPage(Model model, @RequestParam(value = "email") String email, @RequestParam(value = "password") String password) {
+    public String loginPage(Model model, String email, String password) {
         MstMember mstMember = mstMemberRepository.findMstMemberByEmailAndPassword(email, password);
         if (mstMember == null){
             model.addAttribute("email", email);
@@ -81,6 +84,8 @@ public class PerpusOnlineServices {
             model.addAttribute("errorLogin", "Email atau password tidak valid!");
         } else {
             mstMember.setIsLogin("ACTIVE");
+            mstMemberRepository.save(mstMember);
+            model.addAttribute("userLogin", mstMember.getIdMember());
             model.addAttribute("", null);
             return dashboardPage(model.addAttribute("",null));
         }
@@ -104,17 +109,24 @@ public class PerpusOnlineServices {
         return "dashboardPage";
     }
 
-    public String borrowingBook( Model model, @RequestParam("bookId") Integer bookId) {
+    public String borrowingBook(Model model, Integer bookId) {
         MstBook borrowedBook = mstBookRepository.findById(bookId).orElse(null);
         MstMember mstMember = mstMemberRepository.findByIsLogin("ACTIVE");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
 
         if (mstMember.isBorrowed()){
             model.addAttribute("isBorrowed", "Maximal peminjaman 1 buku, mohon kembalikan dulu buku yang telah anda pinjam");
+            model.addAttribute("name", borrowedBook.getBookName());
+            model.addAttribute("author", borrowedBook.getAuthor());
+            model.addAttribute("stock", borrowedBook.getStock());
+            model.addAttribute("userLogin", mstMember.getIdMember());
         } else {
             if (borrowedBook != null) {
                 model.addAttribute("name", borrowedBook.getBookName());
                 model.addAttribute("author", borrowedBook.getAuthor());
                 model.addAttribute("stock", borrowedBook.getStock() - 1);
+                model.addAttribute("userLogin", mstMember.getIdMember());
 
                 borrowedBook.setBookName(borrowedBook.getBookName());
                 borrowedBook.setAuthor(borrowedBook.getAuthor());
@@ -125,13 +137,12 @@ public class PerpusOnlineServices {
                 trxOrder.setAuthor(borrowedBook.getAuthor());
                 trxOrder.setJumlahBuku(1);
                 trxOrder.setIdBook(mstBook.getId());
-                if (mstMember != null){
-                    trxOrder.setIdMember(mstMember.getIdMember());
-                    mstMember.setBorrowed(true);
-                }
-
+                trxOrder.setIdMember(mstMember.getIdMember());
+                mstMember.setBorrowed(true);
+                trxOrder.setTglPeminjaman(formattedDate);
+                trxOrder.setReturnDeadline(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                trxOrder.setReturn(false);
                 trxOrderRepository.save(trxOrder);
-
             } else {
                 model.addAttribute("name", null);
                 model.addAttribute("author", null);
@@ -139,5 +150,37 @@ public class PerpusOnlineServices {
             }
         }
         return "dashboardPage";
+    }
+
+    public String returnBook(Model model, Integer bookId) {
+        MstBook borrowedBook = mstBookRepository.findById(bookId).orElse(null);
+        MstMember mstMember = mstMemberRepository.findByIsLogin("ACTIVE");
+        TrxOrder trxOrder = trxOrderRepository.findByIdBook(bookId, mstMember.getIdMember());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
+
+        borrowedBook.setStock(borrowedBook.getStock() + 1);
+        mstMember.setBorrowed(false);
+        trxOrder.setReturn(true);
+        trxOrder.setTglPengembalian(formattedDate);
+        trxOrderRepository.save(trxOrder);
+        mstBookRepository.save(borrowedBook);
+        mstMemberRepository.save(mstMember);
+
+        model.addAttribute("name", borrowedBook.getBookName());
+        model.addAttribute("author", borrowedBook.getAuthor());
+        model.addAttribute("stock", borrowedBook.getStock());
+        model.addAttribute("userLogin", mstMember.getIdMember());
+
+        return "dashboardPage";
+    }
+
+    public String logoutPage(String logoutUser) {
+        MstMember mstMember = mstMemberRepository.findByIdMember(logoutUser);
+        if (mstMember != null){
+            mstMember.setIsLogin("INACTIVE");
+            mstMemberRepository.save(mstMember);
+        }
+        return "loginPage";
     }
 }

@@ -73,31 +73,26 @@
       </div>
       <span th:if="${stock}" style="font-size: 20px;"  th:text="${stock}"></span>
       <form action="/pinjamBuku" method="POST">
-        <input type="hidden" name="bookId" value="1"> <!-- Nilai ID buku yang ingin dipinjam -->
+        <input type="hidden" name="bookId" value="1">
         <div class="form-group">
           <button type="submit" class="button">Pinjam Buku</button>
-          <span th:if="${isBorrowed}" style="color: red; font-size: 12px;"  th:text="${isBorrowed}"></span>
         </div>
       </form>
+      <form action="/returnBook" method="POST">
+        <input type="hidden" name="bookId" value="1">
+        <div class="form-group">
+          <button type="submit" class="button">Kembalikan Buku</button>
+        </div>
+        <span th:if="${isBorrowed}" style="color: red; font-size: 12px;"  th:text="${isBorrowed}"></span>
+      </form>
     </li>
-<!--    <li class="book-item">-->
-<!--      <div class="book-details">-->
-<!--        <span class="book-title">Book 2</span>-->
-<!--        <span class="book-author">Author 2</span>-->
-<!--      </div>-->
-<!--      <span class="book-available">5 available</span> &lt;!&ndash; Menampilkan jumlah buku yang tersedia &ndash;&gt;-->
-<!--      <a href="#" class="button">Pinjam</a>-->
-<!--    </li>-->
-<!--    <li class="book-item">-->
-<!--      <div class="book-details">-->
-<!--        <span class="book-title">Book 3</span>-->
-<!--        <span class="book-author">Author 3</span>-->
-<!--      </div>-->
-<!--      <span th:if="${book1}" style="font-size: 20px;"  th:text="${book1}"></span>-->
-<!--      <a href="#" class="button">Pinjam</a>-->
-<!--    </li>-->
-    <!-- Anda dapat menambahkan lebih banyak buku di sini -->
   </ul>
+  <form action="/logoutPage" method="POST">
+    <input type="hidden" name="userLogin" th:value="${userLogin}">
+    <div class="form-group">
+      <button type="submit" class="button">Logout</button>
+    </div>
+  </form>
 </div>
 </body>
 </html>
